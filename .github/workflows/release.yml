@@ -17,7 +17,7 @@ jobs:
       - run: npm install -g npm@11.6.2 # trusted publishing needs npm >= 11.5.1
       - run: npm ci
       - run: npm run typecheck && npm test
-      - uses: changesets/action@v1
+      - uses: changesets/action@v2
         with:
           version: npm run version-packages
           publish: npm run release
