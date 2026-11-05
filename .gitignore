@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+# Conformance inputs are regenerated in memory by the tests; only the Go SDK's answers (fixtures/) are stored.
+conformance/cases/
+# Never commit real histories, credentials or captures.
+*.har
+.env
+.env.*
+things-log*.json

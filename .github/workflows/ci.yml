@@ -1,0 +1,24 @@
+name: ci
+on:
+  push: { branches: [main] }
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "${{ matrix.node }}" }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm test
+      - run: npm run smoke:pack --workspace @vanpana/things-ts-sdk
+      - run: node --test ops/
+      - run: npm run probe:mock --workspace things-ts-worker
+      - run: npm run do:mock --workspace things-ts-worker

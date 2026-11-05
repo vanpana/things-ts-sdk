@@ -1,0 +1,13 @@
+{
+  // The account Worker + Durable Object. Run with `wrangler dev -c wrangler.account.jsonc`.
+  // Secrets (never in this file): THINGS_EMAIL, THINGS_PASSWORD, INTERNAL_TOKEN.
+  "name": "things-ts-account",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  // No per-version preview URLs: every extra public URL is extra attack surface for a Worker that holds credentials.
+  "preview_urls": false,
+  // First deploys run read-only: the weekly canary writes to the real account. Remove this line to enable it.
+  "vars": { "CANARY": "off" },
+  "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "ThingsAccount" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ThingsAccount"] }]
+}

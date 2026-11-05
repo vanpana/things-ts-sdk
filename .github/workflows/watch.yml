@@ -1,0 +1,32 @@
+name: protocol-watch
+# Cultured Code does not announce protocol changes. A new Things release or new commits in the reference Go SDK are the
+# earliest signals; this opens an issue so a human re-runs the canary and the conformance suite.
+on:
+  schedule: [{ cron: "17 6 * * *" }]
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - id: watch
+        run: |
+          set +e
+          node ops/watch.mjs | tee report.md
+          code=${PIPESTATUS[0]}
+          echo "changed=$code" >> "$GITHUB_OUTPUT"
+          [ "$code" = 2 ] && exit 1 || exit 0
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - if: steps.watch.outputs.changed == '1'
+        run: |
+          existing=$(gh issue list --label protocol-watch --state open --json number --jq '.[0].number')
+          body="$(printf 'Detected %s\n\n%s\n\nChecklist: run the canary (packages/worker, npm run probe:live), run npm test and the conformance regeneration, then update ops/baseline.json and close this issue.' "$(date -u +%F)" "$(cat report.md)")"
+          if [ -n "$existing" ]; then gh issue comment "$existing" --body "$body"
+          else gh label create protocol-watch --color D93F0B 2>/dev/null || true
+               gh issue create --title "Things protocol watch: something changed" --label protocol-watch --body "$body"; fi
+        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
