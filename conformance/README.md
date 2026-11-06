@@ -24,6 +24,8 @@ packages/sdk/test/conformance-*.test.ts  <--- same inputs, regenerated in memory
   the request log of a local server, and every write verdict).
 - `fixtures/` holds Go's answers (generated, git-ignored).
 - `regenerate.sh` generates `cases/` and `fixtures/`. It refuses to run without Go and never truncates a fixture on failure.
+- `scripts/verify-views.ts` compares the Things lists (`packages/sdk/src/views.ts`) with the community `things.py` on a
+  copy of your own Things database and log (paths come from environment variables, see the file header).
 - `scripts/real-log-diff.ts` compares the fold with Go on a **private** real history
   (`scripts/dump-log.ts` saves your log; then `THINGS_LOG=... GO=... node scripts/real-log-diff.ts`). Nothing from a real account is ever committed.
 

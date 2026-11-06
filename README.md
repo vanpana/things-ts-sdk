@@ -22,8 +22,8 @@ The protocol knowledge and the reference behaviour come from the Go SDK
 TypeScript, not a copy, built so that the same protocol can be used from JavaScript runtimes (notably Workers, which
 cannot run the Go library). Credits are in [NOTICE](NOTICE).
 
-Staying close to the Go SDK is enforced by tests, not by good intentions: `conformance/` runs the real Go SDK on
-thousands of generated cases and the TypeScript tests must give the same answers
+The ported behaviour is pinned by tests, not by good intentions: `conformance/` runs the real Go SDK on thousands of
+generated cases and the TypeScript tests must give the same answers. That needs Go 1.25+ and runs in CI
 ([conformance/README.md](conformance/README.md)).
 
 ## Quick start
