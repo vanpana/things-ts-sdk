@@ -1,0 +1,27 @@
+name: release
+on:
+  push:
+    branches: [main]
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write # npm trusted publishing (OIDC) + provenance
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24, registry-url: "https://registry.npmjs.org" }
+      - run: npm install -g npm@11.6.2 # trusted publishing needs npm >= 11.5.1
+      - run: npm ci
+      - run: npm run typecheck && npm test
+      - uses: changesets/action@v2
+        with:
+          version-script: npm run version-packages
+          publish-script: npm run release
+          pr-title: "Version packages"
+          commit-message: "Version packages"
+          create-github-releases: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
