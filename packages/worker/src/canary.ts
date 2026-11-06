@@ -25,7 +25,7 @@ export async function runCanary(deps: CanaryDeps): Promise<CanaryResult> {
   let taskId: string | undefined;
   try {
     rec("sync + schema", history.latestSchemaVersion === KNOWN_SCHEMA, `schema ${history.latestSchemaVersion}`);
-    const label = `zz-sdk-probe ${new Date().toISOString()}`;
+    const label = `zz-sdk-canary ${new Date().toISOString()}`;
     const create = buildCreate({ title: label, note: "created by the things-ts-sdk canary; safe to delete" }, ctx);
     taskId = create.uuid;
     await history.write([create]);

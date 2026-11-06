@@ -20,7 +20,7 @@ Merging to `main` opens (or updates) a "Version packages" PR. Merging that PR pu
 ## Rules for protocol work
 
 - The protocol is unofficial. Say how a change was verified: the Go conformance tests (`conformance/`), the Mac Things database,
-  or the live probe (`packages/worker`, `npm run probe:live`, your own account only).
+  or the canary on a Worker you deployed against your own account (`packages/worker/README.md`).
 - Never commit credentials, real task titles or notes. Fixtures must be scrubbed.
 - Writes are fail-closed. Do not widen what `History.write` accepts without evidence and a test.
 

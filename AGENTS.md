@@ -4,7 +4,7 @@
 - Every change to published code needs a changeset: add `.changeset/<short-name>.md` with front matter
   `"@vanpana/things-ts-sdk": patch|minor|major` and a one-line summary. Add `author: @handle` on its own line when
   crediting a contributor other than the PR author.
-- Protocol behaviour is verified, not assumed: use the conformance tests (`npm run test:conformance`, needs Go 1.25+) or the live probe.
+- Protocol behaviour is verified, not assumed: use the conformance tests (`npm run test:conformance`, needs Go 1.25+) or the canary on a deployed Worker.
   Do not widen write validation without a test and a note in `docs/DECISIONS.md`.
 - Never put credentials, task titles or notes in code, fixtures, logs or commits.
 - Keep the SDK dependency-free and runnable on Workers (no Node-only APIs in `packages/sdk/src`).

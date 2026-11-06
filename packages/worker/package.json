@@ -9,8 +9,6 @@
     "wrangler": "^4.158.0"
   },
   "scripts": {
-    "probe:mock": "node scripts/run-probe.ts mock",
-    "probe:live": "node scripts/run-probe.ts live",
     "typecheck": "tsc --noEmit -p .",
     "do:mock": "node scripts/run-do.ts"
   }

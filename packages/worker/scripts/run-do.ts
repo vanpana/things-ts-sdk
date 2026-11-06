@@ -171,6 +171,11 @@ let createdId = "";
   const created = await tool("create_task", { title: "Written by the test ✓", note: "note ünï", when: "today" });
   check("create_task", created.status === 200 && created.body.result.ids.length === 1, JSON.stringify(created.body));
   createdId = created.body.result.ids[0];
+  // What the Workers runtime puts on the wire for a commit (the real service is picky about these).
+  const h = fake.commitHeaders.at(-1) ?? {};
+  check("commit headers: Content-Encoding UTF-8, JSON content type, schema 301, app id",
+    String(h["content-encoding"]).toLowerCase() === "utf-8" && h["content-type"] === "application/json; charset=UTF-8" && h["schema"] === "301" && h["app-id"] === "com.culturedcode.ThingsMac" && h["push-priority"] === "5",
+    JSON.stringify(h));
   const got = await tool("get_task", { id: createdId });
   check("created task reads back", got.body.result.task.title === "Written by the test ✓" && got.body.result.task.note === "note ünï");
   const edited = await tool("edit_task", { id: createdId, title: "Edited", complete: true });

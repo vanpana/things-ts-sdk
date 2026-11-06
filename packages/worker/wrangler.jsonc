@@ -1,7 +1,0 @@
-{
-  "name": "things-ts-probe",
-  "main": "src/probe.ts",
-  "compatibility_date": "2026-10-01",
-  // Test fixture that writes to a real account: never publish it on a public workers.dev URL.
-  "workers_dev": false
-}

@@ -13,7 +13,7 @@ Private package (not published). Runs on the Workers Free plan (SQLite-backed Du
 - `src/tools.ts`: the tools (`status`, `get_task`, `list_open_tasks`, `list_view`, `create_task`, `edit_task`,
   `add_checklist_item`), transport-agnostic, inputs validated at the boundary. `list_view` serves Inbox, Today, Upcoming,
   Anytime, Someday, Logbook and Trash (rules in `packages/sdk/src/views.ts`; Today and Upcoming need `THINGS_TIME_ZONE`).
-- `src/canary.ts`: the canary write sequence. `src/probe.ts` + `scripts/run-probe.ts`: SDK-in-workerd probe.
+- `src/canary.ts`: the canary write sequence (create, edit, complete, trash, a stale write, an independent read-back).
 
 ## Calling a tool
 
@@ -26,16 +26,21 @@ curl -X POST "$URL/tool" -H "Authorization: Bearer $INTERNAL_TOKEN" -H "content-
 ## Run the tests
 
 ```
-npm run probe:mock     # the SDK inside workerd against a fake Things server
-npm run do:mock        # the Durable Object: sync, persistence across restart, writes, kill switch, alarm (~15 s)
-npm run probe:live -- task other   # your own account; needs THINGS_EMAIL / THINGS_PASSWORD
+npm run do:mock        # the Worker and Durable Object in workerd against a fake Things server (~15 s): sync,
+                       # persistence across a restart, writes and their headers, kill switch, alarm, timings
 ```
+
+## Checking a deployment against your own account
+
+Deploy it, then call `POST /admin/run-check?which=drift` (reads the whole log, read-only) and
+`POST /admin/run-check?which=canary` (writes one labelled throwaway task, `zz-sdk-canary …`, and trashes it), both with
+the bearer token. `status` shows the results (`lastDrift`, `lastCanary`). Nothing else in the repo writes to a real account.
 
 ## Configuration
 
 Secrets: `THINGS_EMAIL`, `THINGS_PASSWORD`, `INTERNAL_TOKEN` (16+ characters). Optional: `THINGS_TIME_ZONE` (default UTC; defines
-"today"), `SYNC_STALE_MS` (default 10000), `CANARY=off` (disable the weekly canary write, which is on by default). The Durable Object config is
-`wrangler.account.jsonc`; `wrangler.jsonc` is the probe.
+"today"), `SYNC_STALE_MS` (default 10000), `CANARY=off` (disable the weekly canary write, which is on by default). The Worker and Durable Object are configured in
+`wrangler.account.jsonc`.
 
 ## The `INTERNAL_TOKEN`
 

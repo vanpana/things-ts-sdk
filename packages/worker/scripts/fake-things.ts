@@ -10,6 +10,8 @@ export interface Fake {
   log: Commit[];
   /** Every request received, newest last. `start` is the start-index of an items request. */
   requests: { method: string; path: string; start?: number }[];
+  /** Headers of every commit POST, to check what the Workers runtime actually puts on the wire. */
+  commitHeaders: Record<string, string | string[] | undefined>[];
   schema: number;
   /** The next commit POST is preceded by another device's commit, so its ancestor is stale (HTTP 409). */
   raceNextCommit: boolean;
@@ -24,7 +26,7 @@ const PAGE = 2000;
 
 export async function startFake(log: Commit[]): Promise<Fake> {
   const fake: Fake = {
-    port: 0, log, requests: [], schema: 301, raceNextCommit: false, dropNextCommitResponse: false,
+    port: 0, log, requests: [], commitHeaders: [], schema: 301, raceNextCommit: false, dropNextCommitResponse: false,
     foreignCommit() { this.log.push({ [newId()]: { e: "Tag4", t: 0, p: { tt: "from-another-device", ix: 0, sh: null, pn: [], xx: { sn: {}, _t: "oo" } } } }); },
     close: () => new Promise((r) => server.close(() => r())),
   };
@@ -41,6 +43,7 @@ export async function startFake(log: Commit[]): Promise<Fake> {
       return send(200, { items: fake.log.slice(s, s + PAGE), schema: fake.schema, "current-item-index": fake.log.length, "latest-total-content-size": 0, "end-total-content-size": 0 });
     }
     if (req.method === "POST" && url.pathname === "/version/1/history/HK/commit") {
+      fake.commitHeaders.push(req.headers);
       let body = "";
       req.on("data", (c) => (body += c));
       req.on("end", () => {

@@ -25,7 +25,7 @@ jobs:
       - if: steps.watch.outputs.changed == '1'
         run: |
           existing=$(gh issue list --label protocol-watch --state open --json number --jq '.[0].number')
-          body="$(printf 'Detected %s\n\n%s\n\nChecklist: run the canary (packages/worker, npm run probe:live), run npm test and the conformance regeneration, then update ops/baseline.json and close this issue.' "$(date -u +%F)" "$(cat report.md)")"
+          body="$(printf 'Detected %s\n\n%s\n\nChecklist: run the canary on a deployed Worker (POST /admin/run-check?which=canary, see packages/worker/README.md), run npm test and the conformance regeneration, then update ops/baseline.json and close this issue.' "$(date -u +%F)" "$(cat report.md)")"
           if [ -n "$existing" ]; then gh issue comment "$existing" --body "$body"
           else gh label create protocol-watch --color D93F0B 2>/dev/null || true
                gh issue create --title "Things protocol watch: something changed" --label protocol-watch --body "$body"; fi
