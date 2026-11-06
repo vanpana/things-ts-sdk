@@ -1,0 +1,17 @@
+{
+  "name": "things-ts-worker",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cloudflare Worker + Durable Object that keeps Things state warm and exposes it as allow-listed tools. Private, not published.",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.158.0"
+  },
+  "scripts": {
+    "probe:mock": "node scripts/run-probe.ts mock",
+    "probe:live": "node scripts/run-probe.ts live",
+    "typecheck": "tsc --noEmit -p .",
+    "do:mock": "node scripts/run-do.ts"
+  }
+}

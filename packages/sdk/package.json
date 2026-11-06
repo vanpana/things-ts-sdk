@@ -1,0 +1,51 @@
+{
+  "name": "@vanpana/things-ts-sdk",
+  "version": "0.1.0",
+  "description": "Unofficial TypeScript client for the Things Cloud sync protocol. Runs anywhere fetch does (Node, Workers, Deno, Bun). Not affiliated with Cultured Code.",
+  "type": "module",
+  "license": "MIT",
+  "author": "vanpana",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanpana/things-ts-sdk.git",
+    "directory": "packages/sdk"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --experimental-strip-types \"test/*.test.ts\"",
+    "prepack": "npm run build",
+    "smoke:pack": "node scripts/pack-smoke.mjs"
+  },
+  "keywords": [
+    "things",
+    "things3",
+    "culturedcode",
+    "todo",
+    "sync",
+    "cloudflare-workers"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

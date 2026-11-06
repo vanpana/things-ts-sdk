@@ -1,0 +1,5 @@
+{
+  "macApp": { "id": 904280696, "version": "3.24.1" },
+  "iosApp": { "id": 904237743, "version": "3.25.2" },
+  "upstream": { "repo": "arthursoares/things-cloud-sdk", "commit": "6919edc62da7ac98dbd8afbdffccc48fcd0807ed", "release": "v0.6.0" }
+}

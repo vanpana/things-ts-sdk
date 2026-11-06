@@ -1,0 +1,14 @@
+{
+  // The account Worker + Durable Object. Run with `wrangler dev -c wrangler.account.jsonc`.
+  // Secrets (never in this file): THINGS_EMAIL, THINGS_PASSWORD, INTERNAL_TOKEN.
+  "name": "things-ts-account",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  // No per-version preview URLs: every extra public URL is extra attack surface for a Worker that holds credentials.
+  "preview_urls": false,
+  // Reachable only through a service binding from the private layer. Without this line a deploy turns the public
+  // workers.dev URL back on.
+  "workers_dev": false,
+  "durable_objects": { "bindings": [{ "name": "ACCOUNT", "class_name": "ThingsAccount" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ThingsAccount"] }]
+}
