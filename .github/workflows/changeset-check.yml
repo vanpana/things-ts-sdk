@@ -4,6 +4,8 @@ permissions:
   contents: read
 jobs:
   check:
+    # The release PR consumes the changesets, so it can never contain one.
+    if: github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
