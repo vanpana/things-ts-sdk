@@ -23,7 +23,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "NOTICE"
+    "NOTICE",
+    "CHANGELOG.md"
   ],
   "engines": {
     "node": ">=22"
