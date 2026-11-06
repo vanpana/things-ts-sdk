@@ -1,6 +1,6 @@
 {
   "name": "@vanpana/things-ts-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unofficial TypeScript client for the Things Cloud sync protocol. Runs anywhere fetch does (Node, Workers, Deno, Bun). Not affiliated with Cultured Code.",
   "type": "module",
   "license": "MIT",
